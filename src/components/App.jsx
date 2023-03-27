@@ -17,17 +17,31 @@ export class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+    if (contacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state !== prevState) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   addContact = ({ name, number }) => {
-   const names = this.state.contacts.map(contact => contact.name);
-   if (names.indexOf(name) >= 0) {
-     alert(name + ' is already in contacts');
-     return;
-   }
-   this.setState(prevState => {
-     return {
-       contacts: [{ name, number, id: nanoid() }, ...prevState.contacts],
-     };
-   });
+    const names = this.state.contacts.map(contact => contact.name);
+    if (names.indexOf(name) >= 0) {
+      alert(name + ' is already in contacts');
+      return;
+    }
+    this.setState(prevState => {
+      return {
+        contacts: [{ name, number, id: nanoid() }, ...prevState.contacts],
+      };
+    });
   };
 
   deleteContact = id => {
