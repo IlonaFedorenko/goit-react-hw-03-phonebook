@@ -16,6 +16,6 @@ export function Filter({ name, changeInput }) {
 }
 
 Filter.propTypes = {
-  name: PropTypes.string,
+  name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };

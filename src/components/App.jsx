@@ -32,8 +32,10 @@ export class App extends Component {
   }
 
   addContact = ({ name, number }) => {
-    const names = this.state.contacts.map(contact => contact.name);
-    if (names.indexOf(name) >= 0) {
+    const isInContscts = this.state.contacts.some(
+      contact => contact.name.toLocaleUpperCase() === name.toLocaleUpperCase
+    );
+    if (isInContscts) {
       alert(name + ' is already in contacts');
       return;
     }
@@ -55,11 +57,16 @@ export class App extends Component {
     this.setState({ [name]: value });
   };
 
-  render() {
+  getFilteredContacts = () => {
     const { contacts, filter } = this.state;
-    const filterContacts = contacts.filter(contact =>
+    return contacts.filter(contact =>
       contact.name.toLowerCase().includes(filter.toLowerCase())
     );
+  };
+
+  render() {
+    const { contacts, filter } = this.state;
+    const filterContacts = this.getFilteredContacts();
 
     return (
       <>
